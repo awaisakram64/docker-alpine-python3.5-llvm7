@@ -18,22 +18,16 @@ RUN apk update && \
     apk --no-cache add \
         build-base \
         linux-headers \
-        gcc \
-        wget \
         git \
-        g++ \
         openssl-dev \
         make \
         openjpeg-dev \
         tiff-dev \
         zlib-dev \
-        libxml2-dev \
         libxslt-dev \
         sqlite \
         sqlite-dev \
         bzip2-dev \
-        python3-tkinter \
-        ncurses-dev \
         readline-dev \
         xz-dev
 
