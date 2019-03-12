@@ -1,4 +1,4 @@
-# docker-python3.5-numba
+# docker-alpine-python3.5-llvm7
 
 This projected generates a Docker image based on Alpine with LLVM 7 
 served by [larsklitzke/alpine-llvm7.0](https://hub.docker.com/r/larsklitzke/alpine-llvm7.0) for [Python 3.5](https://hub.docker.com/_/python/).
