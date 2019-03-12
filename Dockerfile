@@ -17,6 +17,7 @@ RUN apk --no-cache del libressl-dev
 RUN apk update && \
     apk --no-cache add \
         build-base \
+        linux-headers \
         gcc \
         wget \
         git \
@@ -39,49 +40,9 @@ RUN apk update && \
 
 RUN cd /cpython-3.5.7rc1 && \
     ./configure --enable-optimizations --enable-loadable-sqlite-extensions && \
-    make -j$(nproc) && make test
+    make -j$(nproc) && make -j$(nproc) test
 
 RUN cd /cpython-3.5.7rc1 && make install
 
 # cleanup
 RUN rm -r /cpython-3.5.7rc1
-
-
-
-#
-## replace librressl with openssl
-#RUN apk --no-cache del libressl-dev
-#
-## add python dev dependencies
-#RUN apk --no-cache add \
-#	autoconf \
-#	automake \
-#	freetype-dev \
-#	g++ \
-#	gcc \
-#	jpeg-dev \
-#	lcms2-dev \
-#	libffi-dev \
-#	libpng-dev \
-#	libwebp-dev \
-#	linux-headers \
-#	openssl-dev \
-#	make \
-#	openjpeg-dev \
-#	tiff-dev \
-#	zlib-dev \
-#	libxml2-dev \
-#	libxslt-dev
-#
-## Ensure pip is installed
-#RUN	python3 -m ensurepip && \
-#    test -e /usr/bin/pip || ln -s /usr/bin/pip3 /usr/bin/pip;
-#
-## Upgrade setuptools and install some python packages
-#RUN pip install --no-cache-dir -U \
-#    setuptools \
-#    lxml \
-#    pymysql \
-#    sqlalchemy \
-#    sqlalchemy_utils \
-#    marshmallow==3.0.0b13
