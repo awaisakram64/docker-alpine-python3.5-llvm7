@@ -3,12 +3,12 @@ FROM larsklitzke/alpine-llvm7.0:latest
 MAINTAINER Lars Klitzke <Lars.Klitzke@gmail.com>
 
 # VERSIONS
-ENV PYTHON_VERSION=3.5.7
+ENV PYTHON_VERSION=3.5.6
 
 RUN apk --no-cache add tar wget
 
 # Add the python sources
-RUN wget https://github.com/python/cpython/archive/v3.5.7rc1.tar.gz && tar xvf v3.5.7rc1.tar.gz
+RUN wget https://github.com/python/cpython/archive/v3.5.6.tar.gz && tar xvf v3.5.6.tar.gz
 
 # replace librressl with openssl
 RUN apk --no-cache del libressl-dev
@@ -38,11 +38,11 @@ RUN apk update && \
         xz-dev
 
 
-RUN cd /cpython-3.5.7rc1 && \
-    ./configure --enable-optimizations --enable-loadable-sqlite-extensions && \
-    make -j$(nproc) && make -j$(nproc) test
+RUN cd /cpython-3.5.6 && \
+    ./configure --enable-optimizations --enable-loadable-sqlite-extensions --enable-shared && \
+    make -j$(nproc)
 
-RUN cd /cpython-3.5.7rc1 && make install
+RUN cd /cpython-3.5.6 && make install
 
 # cleanup
-RUN rm -r /cpython-3.5.7rc1
+RUN rm -r /cpython-3.5.6
