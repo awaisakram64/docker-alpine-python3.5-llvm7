@@ -43,6 +43,9 @@ RUN cd /cpython-3.5.7rc1 && \
 
 RUN cd /cpython-3.5.7rc1 && make install
 
+# cleanup
+RUN rm -r /cpython-3.5.7rc1
+
 
 
 #
