@@ -38,5 +38,11 @@ RUN cd /cpython-3.5.6 && \
 
 RUN cd /cpython-3.5.6 && make install
 
+# Set symlinks
+RUN rm /usr/bin/python /usr/bin/pip; \
+    ln -s /usr/local/bin/python3 /usr/bin/python; \
+    ln -s /usr/local/bin/pip3 /usr/bin/pip;
+
 # cleanup
 RUN rm -r /cpython-3.5.6
+
