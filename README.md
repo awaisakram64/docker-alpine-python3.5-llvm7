@@ -5,7 +5,7 @@ served by [larsklitzke/alpine-llvm7.0](https://hub.docker.com/r/larsklitzke/alpi
 
 # Docker image
 
-The latest version of the image is hosted on [Dockerhub](https://hub.docker.com/r/larsklitzke/python3.5-llvm7).
+The latest version of the image is hosted on [Dockerhub](https://hub.docker.com/r/larsklitzke/alpine-python3.5-llvm7).
 
 You can use the image in your project by pulling it from Dockerhub with
 
