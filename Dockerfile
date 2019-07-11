@@ -1,48 +1,30 @@
-# use the latest mysql version
-FROM larsklitzke/alpine-llvm7.0:latest
+FROM python:3.5-alpine3.9
 MAINTAINER Lars Klitzke <Lars.Klitzke@gmail.com>
 
-# VERSIONS
-ENV PYTHON_VERSION=3.5.6
+# install llvm in version 7.0.x
+RUN wget http://releases.llvm.org/7.0.1/llvm-7.0.1.src.tar.xz && tar xvf llvm-7.0.1.src.tar.xz
 
-RUN apk --no-cache add tar wget
+# add llvm dependencies
+RUN apk --no-cache add \
+	autoconf \
+	automake \
+	freetype-dev \
+	g++ \
+	gcc \
+	cmake \
+	make \
+    libxml2-dev \
+    python2 \
+    ncurses-dev
 
-# Add the python sources
-RUN wget https://github.com/python/cpython/archive/v3.5.6.tar.gz && tar xvf v3.5.6.tar.gz
+# configure LLVM using CMake
+RUN cd llvm-7.0.1.src && mkdir build && cd build && cmake .. \
+    -G "Unix Makefiles" -DLLVM_TARGETS_TO_BUILD="X86" \
+    -DCMAKE_BUILD_TYPE=MinSizeRel
 
-# replace librressl with openssl
-RUN apk --no-cache del libressl-dev
+# build and install LLVM
+RUN cd llvm-7.0.1.src/build && make -j$(nproc) && make install
 
-# install build dependencies
-RUN apk update && \
-    apk --no-cache add \
-        build-base \
-        linux-headers \
-        git \
-        openssl-dev \
-        make \
-        openjpeg-dev \
-        tiff-dev \
-        zlib-dev \
-        libxslt-dev \
-        sqlite \
-        sqlite-dev \
-        bzip2-dev \
-        readline-dev \
-        xz-dev
-
-
-RUN cd /cpython-3.5.6 && \
-    ./configure --enable-optimizations --enable-loadable-sqlite-extensions --enable-shared && \
-    make -j$(nproc)
-
-RUN cd /cpython-3.5.6 && make install
-
-# Set symlinks
-RUN rm /usr/bin/python /usr/bin/pip; \
-    ln -s /usr/local/bin/python3 /usr/bin/python; \
-    ln -s /usr/local/bin/pip3 /usr/bin/pip;
-
+RUN cd llvm-7.0.1.src/build && make -j test
 # cleanup
-RUN rm -r /cpython-3.5.6
-
+RUN rm -r llvm-7.0.1.src
